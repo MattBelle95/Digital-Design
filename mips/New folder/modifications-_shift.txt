@@ -1,0 +1,50 @@
+ALU_CODE
+
+`define shl            6'b000000
+`define shr            6'b000010
+
+.................................
+ input      [4:0] shamt,
+.................................
+ `shl :begin
+     result= src_a<<shamt;
+       end
+ `shr :begin                        //at  casex (alu_control) /*begin case*/
+     result= src_a>>shamt;
+       end
+.....................................................................................................................
+ MIPS_microprocessor code
+
+/*ALU*/   //below this comment 
+
+ wire [4:0] shamt;                                                           
+ ALU mips_ALU(alu_control,alu_src_a,alu_src_b,shamt,alu_result,alu_zero);
+................................
+assign shamt =inst_memory_instruction[10:6]; //the last line "assign" at this code 
+......................................................................................................................
+control_unit code 
+
+`define shl            6'b000000
+`define shr            6'b000010
+...................................
+`shl : begin /*shift left*/
+            alu_control = `shl;
+            addr_sel = 0; 
+            reg_write_data_sel = 0;
+            reg_write_enable = 1;
+            alu_src_b_sel = 0;
+        end                             //these lines below the following lines    /* always @ (*) begin /*1st always*/
+                                                                                     casex (opcode) /*opcode case*/
+                                                                                    `R_TYPE : begin /*R-Type*/
+                                                                                     PC_sel = 0;
+                                                                                     data_memory_write_enable=0;
+                                                                                     casex (funct)*/
+`shr : begin  /*shift right*/
+            alu_control = `shr;
+            addr_sel = 0;
+            reg_write_data_sel = 0;
+            reg_write_enable = 1;
+            alu_src_b_sel = 0;
+        end         
+
+

@@ -1,0 +1,40 @@
+#control unit
+
+`define ADDI            6'b001000
+
+
+>> add case
+
+`ADDI : begin
+
+alu_control = `ADDI;
+addr_sel = 1;              //00000 - 00000 - 00001
+reg_write_data_sel = 0;
+reg_write_enable = 1;
+
+alu_src_b_sel = 1;         //sign_extend_data
+
+************************************************************
+
+#Data Path
+
+mux2_1 #(5) write_addr3_mux (write_addr3_sel,instruction[15:11],instruction[20:16],reg_write_addr3);
+
+*************************************************************
+
+#ALU
+
+`define ADDI            6'b001000
+
+
+
+>> add case
+
+
+`ADDI : begin /*ADDI case*/
+result = src_a + src_b;
+
+
+
+
+
